@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>index</title>
+		<script src="browser.js"></script>
+		<script>
+			function init() {
+				window.textfield = document.getElementById("input");
+				window.textfield.value = App.input;
+				var tree = App.compile(window.textfield.value);
+				//console.log(tree);
+				//console.log(stringtree(tree))
+			}
+			/*function stringtree(tree, indent) {
+				var result = "";
+				indent = indent || 0;
+				result += Array(indent+1).join(' ');
+				result += tree.getText() + '\n';
+				for(var i = 0; i < tree.getChildCount(); i++) {
+					result += stringtree(tree.getChild(i), indent+1);
+				}
+				return result;
+			}*/
+		</script>
+	</head>
+	<body onload="init()">
+		<textarea id="input">
+		</textarea>
+		<button onclick="console.log(App.compile(window.textfield.value))">Compile</button>
+	</body>
+</html>
