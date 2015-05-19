@@ -1,13 +1,15 @@
 var antlr4 = require("antlr4");
 var JavaParser = require("./grammars/java/JavaParser.js").JavaParser;
 var JavaLexer = require("./grammars/java/JavaLexer.js").JavaLexer;
-var Transpiler = require("./transpiler.js").Transpiler;
+var java2js = require("./transpiler");
+var escodegen = require('escodegen');
 
 module.exports.input =
 "/*\n" + 
 " * HelloWorld.java\n" + 
 " */\n" + 
-"\n" + 
+"package foo.bar.baz;\n" + 
+"import static foo.bar.baz;\n" + 
 "public class HelloWorld\n" + 
 "{\n" + 
 "	public HelloWorld() {\n" + 
@@ -22,10 +24,8 @@ module.exports.compile = function(input) {
 	var tokens  = new antlr4.CommonTokenStream(lexer);
 	var parser = new JavaParser(tokens);
 	parser.buildParseTrees = true;
-	var tree = parser.compilationUnit();
+	var jtree = parser.compilationUnit();
 
-	var walker = new antlr4.tree.ParseTreeWalker();
-	var listener = new Transpiler();
-	walker.walk(listener, tree);
-
+	var jstree = java2js.transpile(jtree, java2js.CompilationUnitTranspiler)
+	return escodegen.generate(jstree);
 }

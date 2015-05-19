@@ -5,11 +5,11 @@
 
 all: browser.js
 
-browser.js: app.js
+browser.js: app.js transpiler/*
 	browserify -s App $< > $@
 
 clean:
-	rm browser.js
+	rm -f browser.js
 
 .PHONY: clean
 
