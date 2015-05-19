@@ -8,14 +8,29 @@ function ClassDeclarationTranspiler(parent) {
 	BaseTranspiler.call(this, parent);
 	this.name = null;
 	this.body = null;
+	this.params = []
 	this.extends = null;
 	return this;
 }
 
 util.inherits(ClassDeclarationTranspiler, BaseTranspiler);
 
-ClassDeclarationTranspiler.prototype.visitClassDeclarationTranspiler = function(ctx) {
-	return this.visitChildren(ctx);
+ClassDeclarationTranspiler.prototype.visitClassDeclaration = function(ctx) {
+	return {
+		"type": "FunctionDeclaration",
+		"id": {
+			"type": "Identifier",
+			"name": ctx.Identifier()
+		},
+		"params": this.params,
+		"defaults": [],
+		"body": {
+			"type": "BlockStatement",
+			"body": this.visitWith(ClassBodyTranspiler, ctx.classBody())
+		},
+		"generator": false,
+		"expression": false
+	}
 }
 
 ClassDeclarationTranspiler.prototype._findType = function(type, name) {

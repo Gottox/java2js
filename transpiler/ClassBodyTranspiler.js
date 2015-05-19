@@ -2,13 +2,12 @@
 // jshint ignore: start
 var BaseTranspiler = require('./BaseTranspiler.js');
 var ClassDeclarationTranspiler = require('./ClassDeclarationTranspiler.js');
+var FieldDeclarationTranspiler = require('./FieldDeclarationTranspiler.js');
+var MethodDeclarationTranspiler = require('./MethodDeclarationTranspiler.js');
 var util = require('util');
 
 function ClassBodyTranspiler(parent) {
 	BaseTranspiler.call(this, parent);
-	this.package = null;
-	this.imports = [];
-	this.staticImports = [];
 	return this;
 }
 
@@ -16,6 +15,18 @@ util.inherits(ClassBodyTranspiler, BaseTranspiler);
 
 ClassBodyTranspiler.prototype.visitClassDeclaration = function(ctx) {
 	return this.visitWith(ClassDeclarationTranspiler, ctx);
+}
+
+ClassBodyTranspiler.prototype.visitMethodDeclaration = function(ctx) {
+	return this.visitWith(MethodDeclarationTranspiler, ctx);
+}
+
+ClassBodyTranspiler.prototype.visitConstructorDeclaration = function(ctx) {
+	return this.visitWith(MethodDeclarationTranspiler, ctx);
+}
+
+ClassBodyTranspiler.prototype.visitFieldDeclaration = function(ctx) {
+	return this.visitWith(FieldDeclarationTranspiler, ctx);
 }
 
 module.exports = ClassBodyTranspiler;

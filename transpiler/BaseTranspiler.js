@@ -10,7 +10,11 @@ function BaseTranspiler(parent) {
 	if(parent === undefined)
 		throw new Error("Parent is undefined provide at least null if there are no parents.");
 	this.parent = parent;
-	this.symbols = {};
+	this.symbols = {
+		types: [],
+		methods: [],
+		fields: []
+	};
 	return this;
 }
 
@@ -135,17 +139,40 @@ BaseTranspiler.prototype.visitChildren = function(ctx) {
 BaseTranspiler.prototype.visitLiteral = function(ctx) {
 	// BUG: We assume, that Java and Javascript have the same literals.
 	// This is potentional unsafe.
-	return {
+	var result = {
 		type: 'Literal',
 		value: eval(ctx.getText()),
 		raw: ctx.getText()
+	};
+	if(ctx.StringLiteral()) {
+		result = {
+				"type": "CallExpression",
+				"callee": {
+					"type": "Identifier",
+					"name": "j$"
+				},
+				"arguments": [
+					result
+				]
+		};
 	}
+	return result;
 }
 
 BaseTranspiler.prototype.visitWith = function(Proto, ctx) {
 	var visitor = new Proto(this);
 	return ctx.accept(visitor);
 };
+
+BaseTranspiler.prototype.addSymbol = function(type, node) {
+	if(!(type in this.symbols))
+		throw new Error("Type " + type + " is unkown!");
+	else if(node.Identifier() in this.symbols[type]) {
+		throw new Error(type + " `"+node.Identifier()+"` already defined.");
+	}
+	this.symbols[type].push(node);
+	this.symbols[type][node.Identifier()](node);
+}
 
 BaseTranspiler.prototype.findSymbol = function(type, name) {
 	var symbols = this.symbols[type]
@@ -164,9 +191,11 @@ BaseTranspiler.prototype.findSymbol = function(type, name) {
 		return null;
 	}
 }
+
 BaseTranspiler.prototype.findField = function(name) {
 	return this.findSymbol('field', name);
 }
+
 BaseTranspiler.prototype.findMethod = function(name) {
 	return this.findSymbol('method', name);
 }

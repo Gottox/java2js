@@ -19,5 +19,8 @@
   "dependencies": {
     "antlr4": "^4.5.2",
     "escodegen": "^1.6.1"
+  },
+  "devDependencies": {
+    "brfs": "^1.4.0"
   }
 }

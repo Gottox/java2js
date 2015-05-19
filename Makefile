@@ -6,7 +6,7 @@
 all: browser.js
 
 browser.js: app.js transpiler/*
-	browserify -s App $< > $@
+	browserify -t brfs -s App $< > $@
 
 clean:
 	rm -f browser.js
