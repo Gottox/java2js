@@ -1,6 +1,6 @@
 // Generated from grammars/java/Java.g4 by ANTLR 4.5
 // jshint ignore: start
-var JavaVisitor = require('../grammars/java/JavaVisitor.js').JavaVisitor;
+var JavaVisitor = require('../grammar/JavaVisitor.js').JavaVisitor;
 var util = require('util');
 
 // This class defines a complete generic visitor for a parse tree produced by JavaParser.
@@ -123,7 +123,7 @@ BaseTranspiler.prototype.visitArguments =
 BaseTranspiler.prototype.visitTerminal =
 BaseTranspiler.prototype.visitChildren = function(ctx) {
 	var result = [], item;
-	for(var i = 0; i < ctx.getChildCount(); i++) {
+	for(var i = 0; ctx && i < ctx.getChildCount(); i++) {
 		item = ctx.getChild(i).accept(this);
 		if(item === undefined)
 			continue;
@@ -134,6 +134,7 @@ BaseTranspiler.prototype.visitChildren = function(ctx) {
 	}
 	return result;
 };
+
 
 // Literals
 BaseTranspiler.prototype.visitLiteral = function(ctx) {
@@ -200,8 +201,8 @@ BaseTranspiler.prototype.findMethod = function(name) {
 	return this.findSymbol('method', name);
 }
 
-BaseTranspiler.prototype.visitErrorNode = function() {
-	// EMPTY
+BaseTranspiler.prototype.visitErrorNode = function(ctx) {
+	throw new Error();
 }
 
 module.exports = BaseTranspiler;
