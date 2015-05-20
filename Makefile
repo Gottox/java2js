@@ -3,7 +3,7 @@ ANTLR = tools/antlr-$(ANTLR_VERSION)-complete.jar
 GRAMMAR = grammars/java/Java.g4
 GRAMMAR_REPO = https://github.com/Gottox/grammars-v4.git
 
-all: grammar
+all: ghpages
 
 tools:
 	mkdir tools;

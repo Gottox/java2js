@@ -1,18 +1,26 @@
 /*
  * HelloWorld.java
- * Copyright (C) 2015 tox <tox@rootkit>
  *
- * Distributed under terms of the MIT license.
+ * Example file
  */
 
 public class HelloWorld
 {
-	int number = 42;
-	String string = "Hello World";
 	public HelloWorld() {
 	}
-	public void action(String hello) {
-		int localNumber = 42;
+
+	public static void main(String[] argv) {
+		HelloWorld hw = new HelloWorld();
+		hw.printHello();
+		hw.printWorld();
+	}
+
+	public void printHello() {
+		System.out.println("Hello");
+	}
+
+	public void printWorld() {
+		System.out.println("World");
 	}
 }
 
