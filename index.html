@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>index</title>
+		<script src="browser.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			function init() {
+				var theme = "ace/theme/chrome";
+
+				var outEditor = ace.edit("output");
+				outEditor.setTheme(theme);
+				outEditor.getSession().setMode("ace/mode/javascript");
+				outEditor.setReadOnly(true);
+
+				var inEditor = ace.edit("input");
+				inEditor.setTheme(theme);
+				inEditor.getSession().setMode("ace/mode/java");
+
+				inEditor.setValue(App.input);
+				outEditor.setValue(App.compile(App.input));
+
+				var timeout = 0;
+				inEditor.getSession().on('change', function(e) {
+					if(timeout)
+						clearTimeout(timeout);
+					timeout = setTimeout(function() {
+						outEditor.setValue(App.compile(inEditor.getValue()));
+						outEditor.selection.clearSelection();
+					}, 100);
+				});
+			}
+		</script>
+		<style>
+#input, #output {
+	display:block;
+	position:absolute;
+	top:0;
+	bottom:0;
+	width:50%;
+}
+#input {
+	left:0;
+}
+#output {
+	right:0;
+}
+		</style>
+	</head>
+	<body onload="init()">
+		<div id="input"></div>
+		<div id="output"></div>
+	</body>
+</html>
