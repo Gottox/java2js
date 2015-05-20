@@ -10,11 +10,13 @@
 				var theme = "ace/theme/chrome";
 
 				var outEditor = ace.edit("output");
+				outEditor.$blockScrolling = Infinity;
 				outEditor.setTheme(theme);
 				outEditor.getSession().setMode("ace/mode/javascript");
 				outEditor.setReadOnly(true);
 
 				var inEditor = ace.edit("input");
+				inEditor.$blockScrolling = Infinity;
 				inEditor.setTheme(theme);
 				inEditor.getSession().setMode("ace/mode/java");
 
