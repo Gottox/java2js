@@ -18,3 +18,12 @@ grammar: $(GRAMMAR) $(ANTLR)
 	java -jar $(ANTLR) -visitor -Dlanguage=JavaScript $<
 	mkdir -p grammar
 	mv grammars/java/Java*.js grammar
+
+clean:
+	rm -fr tools grammars
+
+ghpages: ghpages/browser.js
+
+ghpages/browser.js: ghpages/app.js transpiler/*.js ghpages/HelloWorld.java
+	browserify --debug -t brfs -s App $< > $@
+.PHONY: clean ghpages

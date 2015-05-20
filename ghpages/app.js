@@ -5,7 +5,7 @@ var JavaLexer = require("../grammar/JavaLexer.js").JavaLexer;
 var java2js = require("../transpiler");
 var escodegen = require('escodegen');
 
-module.exports.input = fs.readFileSync("HelloWorld.java");
+module.exports.input = fs.readFileSync(__dirname + "/HelloWorld.java");
 
 module.exports.compile = function(input) {
 	//try {
