@@ -23,6 +23,14 @@ clean:
 	rm -fr tools grammars
 
 ghpages: ghpages/browser.js
+	git clone -b gh-pages . $$PWD/tmp
+	git -C tmp rm -rf $$PWD/tmp/*
+	cp -r ghpages/* $$PWD/tmp
+	git -C tmp add $$PWD/tmp
+	git -C tmp commit -m "rebuild gh-pages based on `git rev-parse HEAD`"
+	git -C tmp push $$PWD gh-pages
+	rm -rf $$PWD/tmp
+
 
 ghpages/browser.js: ghpages/app.js transpiler/*.js ghpages/HelloWorld.java
 	browserify --debug -t brfs -s App $< > $@
