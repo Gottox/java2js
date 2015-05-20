@@ -5,11 +5,13 @@ GRAMMAR_REPO = https://github.com/Gottox/grammars-v4.git
 
 all: ghpages
 
-tools:
-	mkdir tools;
+watch:
+	inotifyrun /bin/sh -c 'sleep 0.1;make ghpages/browser.js'
 
-$(ANTLR): tools
-	wget -O $@ http://www.antlr.org/download/antlr-$(ANTLR_VERSION)-complete.jar
+
+$(ANTLR):
+	mkdir -p tools;
+	wget -c -O $@ http://www.antlr.org/download/antlr-$(ANTLR_VERSION)-complete.jar
 
 $(GRAMMAR):
 	git clone $(GRAMMAR_REPO) grammars || ( cd grammars && git pull )
@@ -34,4 +36,4 @@ ghpages: ghpages/browser.js
 
 ghpages/browser.js: ghpages/app.js transpiler/*.js ghpages/HelloWorld.java
 	browserify --debug -t brfs -s App $< > $@
-.PHONY: clean ghpages
+.PHONY: clean ghpages watch
