@@ -5,8 +5,8 @@
 
 all: browser.js
 
-browser.js: app.js transpiler/*
-	browserify -t brfs -s App $< > $@
+browser.js: app.js ../transpiler/*.js HelloWorld.java
+	browserify --debug -t brfs -s App $< > $@
 
 clean:
 	rm -f browser.js

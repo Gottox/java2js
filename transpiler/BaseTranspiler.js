@@ -200,4 +200,8 @@ BaseTranspiler.prototype.findMethod = function(name) {
 	return this.findSymbol('method', name);
 }
 
+BaseTranspiler.prototype.visitErrorNode = function() {
+	// EMPTY
+}
+
 module.exports = BaseTranspiler;

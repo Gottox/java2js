@@ -4,6 +4,7 @@ var BaseTranspiler = require('./BaseTranspiler.js');
 var ClassDeclarationTranspiler = require('./ClassDeclarationTranspiler.js');
 var FieldDeclarationTranspiler = require('./FieldDeclarationTranspiler.js');
 var MethodDeclarationTranspiler = require('./MethodDeclarationTranspiler.js');
+var ConstructorDeclarationTranspiler = require('./ConstructorDeclarationTranspiler.js');
 var util = require('util');
 
 function ClassBodyTranspiler(parent) {
@@ -22,7 +23,7 @@ ClassBodyTranspiler.prototype.visitMethodDeclaration = function(ctx) {
 }
 
 ClassBodyTranspiler.prototype.visitConstructorDeclaration = function(ctx) {
-	return this.visitWith(MethodDeclarationTranspiler, ctx);
+	return this.visitWith(ConstructorDeclarationTranspiler, ctx);
 }
 
 ClassBodyTranspiler.prototype.visitFieldDeclaration = function(ctx) {

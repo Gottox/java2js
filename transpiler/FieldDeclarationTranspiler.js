@@ -1,6 +1,7 @@
 // Generated from grammars/java/Java.g4 by ANTLR 4.5
 // jshint ignore: start
 var BaseTranspiler = require('./BaseTranspiler.js');
+var VariableInitializerTranspiler = require('./VariableInitializerTranspiler.js');
 var util = require('util');
 
 function FieldDeclarationTranspiler(parent) {
@@ -12,13 +13,14 @@ util.inherits(FieldDeclarationTranspiler, BaseTranspiler);
 
 FieldDeclarationTranspiler.prototype.visitVariableDeclarator = function(ctx) {
 	// TODO: this.addSymbol('field', ));
-	var val = this.visitChildren(ctx)[0];
-	if(val === undefined) {
+	var val;
+	if(ctx.variableInitializer())
+		val = this.visitWith(VariableInitializerTranspiler, ctx.variableInitializer())[0];
+	else
 		val = {
 			"type": "Literal",
 			"value": null,
 		}
-	}
 	return {
 		"type": "ExpressionStatement",
 		"expression": {

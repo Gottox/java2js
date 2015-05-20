@@ -9,14 +9,15 @@
 				window.input = document.getElementById("input");
 				window.output = document.getElementById("output");
 				window.input.value = App.input;
-				var tree = App.compile(window.input.value);
+				output.value = App.compile(window.input.value);
 			}
 		</script>
 		<style>
 #input, #output {
+	display:block;
 	position:absolute;
-	height:80%;
 	top:0;
+	bottom:0;
 	width:50%;
 }
 #input {
@@ -25,19 +26,10 @@
 #output {
 	right:0;
 }
-#bottom {
-	position:absolute;
-	bottom:0;
-	left:0;
-	right:0;
-}
 		</style>
 	</head>
 	<body onload="init()">
-		<textarea id="input"></textarea>
+		<textarea id="input" onkeyup="output.value = App.compile(this.value)"></textarea>
 		<textarea id="output"></textarea>
-		<div id="bottom">
-			<button onclick="window.output.value = App.compile(window.input.value)">Compile</button>
-		</div>
 	</body>
 </html>

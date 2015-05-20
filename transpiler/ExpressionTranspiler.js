@@ -1,5 +1,4 @@
-// Generated from grammars/java/Java.g4 by ANTLR 4.5
-// jshint ignore: start
+
 var BaseTranspiler = require('./BaseTranspiler.js');
 var util = require('util');
 
@@ -17,7 +16,7 @@ ExpressionTranspiler.prototype.visitPrimary = function(ctx) {
 			"name": ctx.Identifier().getText()
 		};
 	else if(ctx.literal())
-		return this.visitChildren(ctx);
+		return this.visitLiteral(ctx.literal());
 	else if(ctx.nonWildcardTypeArguments())
 		return; // TODO
 	else if(ctx.type())
@@ -37,11 +36,13 @@ ExpressionTranspiler.prototype.visitPrimary = function(ctx) {
 }
 
 ExpressionTranspiler.prototype.visitExpression = function(ctx) {
+	console.log(ctx.expression(), ctx.Identifier());
+	//return this.visitChildren(ctx);
 	if(ctx.Identifier())
 		return {
 			"type": "MemberExpression",
 			"computed": false,
-			"object": this.visitExpression(ctx.expression()),
+			"object": this.visitExpression(ctx.expression()[0]),
 			"property": {
 				"type": "Identifier",
 				"name": ctx.Identifier().getText()
@@ -49,6 +50,13 @@ ExpressionTranspiler.prototype.visitExpression = function(ctx) {
 		}
 	else if(ctx.getChild(1) == '[' && ctx.getChild(3) == ']') {
 		return;
+	}
+	else if(ctx.getChild(1) == '(' && ctx.getChild(3) == ')') {
+		return {
+			"type": "CallExpression",
+			"callee": this.visitExpression(ctx.expression()[0]),
+			"arguments": []//this.visitChildren(ctx.expressionList())
+		};
 	}
 	else
 		return this.visitChildren(ctx);
