@@ -14,8 +14,7 @@ BaseTranspiler.prototype.visitLiteral = function(ctx) {
 	// This is potentional unsafe.
 	var result = {
 		type: 'Literal',
-		value: eval(ctx.getText()),
-		raw: ctx.getText()
+		value: eval(ctx.getText())
 	};
 	if(ctx.StringLiteral()) {
 		result = {
@@ -79,7 +78,7 @@ ExpressionTranspiler.prototype.visitExpression = function(ctx) {
 					}
 				};
 		else if(ctx.getChild(2).getText() === 'new')
-			return; // TODO
+			return; // TODO: no idea what foo.new ... is actually doing.
 		else if(ctx.getChild(2).getText() === 'super')
 			return this.visitChildren(ctx.superSuffix())
 	}
@@ -89,7 +88,7 @@ ExpressionTranspiler.prototype.visitExpression = function(ctx) {
 			"callee": this.visitExpression(ctx.expression()[0]),
 			"arguments": this.visitChildren(ctx.expressionList())
 		}
-	else if(ctx.getChild(1).getText() === '[')
+	else if(ctx.getChild(1).getText() === '[' && ctx.getChild(3).getText() === ']')
 			return {
 				"type": "MemberExpression",
 				"computed": true,
@@ -97,6 +96,7 @@ ExpressionTranspiler.prototype.visitExpression = function(ctx) {
 				"property": this.visitExpression(ctx.expression()[1]),
 			};
 	else
+		// TODO: Unkown
 		return this.visitChildren(ctx)[0];
 }
 
