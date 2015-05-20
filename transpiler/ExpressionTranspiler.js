@@ -9,57 +9,95 @@ function ExpressionTranspiler(parent) {
 
 util.inherits(ExpressionTranspiler, BaseTranspiler);
 
-ExpressionTranspiler.prototype.visitPrimary = function(ctx) {
-	if(ctx.Identifier())
-		return {
-			"type": "Identifier",
-			"name": ctx.Identifier().getText()
+BaseTranspiler.prototype.visitLiteral = function(ctx) {
+	// BUG: We assume, that Java and Javascript have the same literals.
+	// This is potentional unsafe.
+	var result = {
+		type: 'Literal',
+		value: eval(ctx.getText()),
+		raw: ctx.getText()
+	};
+	if(ctx.StringLiteral()) {
+		result = {
+				"type": "CallExpression",
+				"callee": {
+					"type": "Identifier",
+					"name": "j$"
+				},
+				"arguments": [
+					result
+				]
 		};
-	else if(ctx.literal())
-		return this.visitLiteral(ctx.literal());
-	else if(ctx.nonWildcardTypeArguments())
-		return; // TODO
-	else if(ctx.type())
-		return {
-			"type": "Identifier",
-			"name": ctx.type().getText()
-		};
-	else if(ctx.getChild(0) === 'void')
-		return; // TODO
-	else if(ctx.getText() === 'super')
-		return {
-			"type": "Identifier",
-			"name": "super_"
-		};
-	else
-		return ctx.getText()
+	}
+	return result;
 }
 
-ExpressionTranspiler.prototype.visitExpression = function(ctx) {
-	console.log(ctx.expression(), ctx.Identifier());
-	//return this.visitChildren(ctx);
+BaseTranspiler.prototype.visitIdentifier = function(ctx) {
+	return {
+		"type": "Identifier",
+		"name": ctx.getText()
+	};
+}
+
+ExpressionTranspiler.prototype.visitPrimary = function(ctx) {
 	if(ctx.Identifier())
+		return this.visitIdentifier(ctx.Identifier());
+	switch(ctx.getText()) {
+	case 'this':
+		return {
+			"type": "ThisExpression"
+		};
+	case 'super':
 		return {
 			"type": "MemberExpression",
 			"computed": false,
-			"object": this.visitExpression(ctx.expression()[0]),
+			"object": {
+				"type": "ThisExpression"
+			},
 			"property": {
 				"type": "Identifier",
-				"name": ctx.Identifier().getText()
+				"name": "super_"
 			}
-		}
-	else if(ctx.getChild(1) == '[' && ctx.getChild(3) == ']') {
-		return;
+		};
+	default:
+		return this.visitChildren(ctx)[0];
 	}
-	else if(ctx.getChild(1) == '(' && ctx.getChild(3) == ')') {
+}
+
+ExpressionTranspiler.prototype.visitExpression = function(ctx) {
+	if(ctx.primary())
+		return this.visitPrimary(ctx);
+	if(ctx.getChild(1).getText() === '.') {
+		if(ctx.Identifier())
+			return {
+					"type": "MemberExpression",
+					"computed": false,
+					"object": this.visitExpression(ctx.expression()[0]),
+					"property": {
+						"type": "Identifier",
+						"name": ctx.Identifier().getText()
+					}
+				};
+		else if(ctx.getChild(2).getText() === 'new')
+			return; // TODO
+		else if(ctx.getChild(2).getText() === 'super')
+			return this.visitChildren(ctx.superSuffix())
+	}
+	else if(ctx.getChild(1).getText() === '(')
 		return {
 			"type": "CallExpression",
 			"callee": this.visitExpression(ctx.expression()[0]),
-			"arguments": []//this.visitChildren(ctx.expressionList())
-		};
-	}
+			"arguments": this.visitChildren(ctx.expressionList())
+		}
+	else if(ctx.getChild(1).getText() === '[')
+			return {
+				"type": "MemberExpression",
+				"computed": true,
+				"object": this.visitExpression(ctx.expression()[0]),
+				"property": this.visitExpression(ctx.expression()[1]),
+			};
 	else
-		return this.visitChildren(ctx);
+		return this.visitChildren(ctx)[0];
 }
 
 

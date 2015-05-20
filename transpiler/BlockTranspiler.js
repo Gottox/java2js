@@ -47,7 +47,7 @@ BlockTranspiler.prototype.visitStatement = function(ctx) {
 	else if(ctx.statementExpression())
 		return {
 			"type": "ExpressionStatement",
-			"expression": this.visitWith(ExpressionTranspiler, ctx)
+			"expression": this.visitWith(ExpressionTranspiler, ctx)[0]
 		}
 	switch(ctx.getChild(0).getText()) {
 	case "if":
