@@ -10,16 +10,15 @@
 				var theme = "ace/theme/chrome";
 
 				var outEditor = ace.edit("output");
+				outEditor.$blockScrolling = Infinity;
 				outEditor.setTheme(theme);
 				outEditor.getSession().setMode("ace/mode/javascript");
 				outEditor.setReadOnly(true);
 
 				var inEditor = ace.edit("input");
+				inEditor.$blockScrolling = Infinity;
 				inEditor.setTheme(theme);
 				inEditor.getSession().setMode("ace/mode/java");
-
-				inEditor.setValue(App.input);
-				outEditor.setValue(App.compile(App.input));
 
 				var timeout = 0;
 				inEditor.getSession().on('change', function(e) {
@@ -30,6 +29,9 @@
 						outEditor.selection.clearSelection();
 					}, 100);
 				});
+
+				inEditor.setValue(App.input);
+				outEditor.setValue(App.compile(App.input));
 			}
 		</script>
 		<style>
