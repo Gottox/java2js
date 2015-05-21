@@ -20,9 +20,6 @@
 				inEditor.setTheme(theme);
 				inEditor.getSession().setMode("ace/mode/java");
 
-				inEditor.setValue(App.input);
-				outEditor.setValue(App.compile(App.input));
-
 				var timeout = 0;
 				inEditor.getSession().on('change', function(e) {
 					if(timeout)
@@ -32,6 +29,9 @@
 						outEditor.selection.clearSelection();
 					}, 100);
 				});
+
+				inEditor.setValue(App.input);
+				outEditor.setValue(App.compile(App.input));
 			}
 		</script>
 		<style>
