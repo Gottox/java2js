@@ -18,14 +18,30 @@ BaseTranspiler.prototype.visitLiteral = function(ctx) {
 	};
 	if(ctx.StringLiteral()) {
 		result = {
-				"type": "CallExpression",
-				"callee": {
-					"type": "Identifier",
-					"name": "j$"
+			"type": "NewExpression",
+			"callee": {
+				"type": "MemberExpression",
+				"computed": false,
+				"object": {
+					"type": "MemberExpression",
+					"computed": false,
+					"object": {
+						"type": "Identifier",
+						"name": "java"
+					},
+					"property": {
+						"type": "Identifier",
+						"name": "lang"
+					}
 				},
-				"arguments": [
-					result
-				]
+				"property": {
+					"type": "Identifier",
+					"name": "String"
+				}
+			},
+			"arguments": [
+				result
+			]
 		};
 	}
 	return result;
