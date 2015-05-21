@@ -6,7 +6,7 @@ GRAMMAR_REPO = https://github.com/Gottox/grammars-v4.git
 all: ghpages
 
 watch:
-	inotifyrun /bin/sh -c 'sleep 0.1;make ghpages/browser.js'
+	inotifyrun /bin/sh -c 'sleep 0.1;make grammar ghpages/browser.js'
 
 
 $(ANTLR):
@@ -17,12 +17,12 @@ $(GRAMMAR):
 	git clone $(GRAMMAR_REPO) grammars || ( cd grammars && git pull )
 
 grammar: $(GRAMMAR) $(ANTLR)
+	mkdir -p $@
 	java -jar $(ANTLR) -visitor -Dlanguage=JavaScript $<
-	mkdir -p grammar
-	mv grammars/java/Java*.js grammar
+	mv grammars/java/Java*.js grammars/java/Java.tokens $@
 
 clean:
-	rm -fr tools grammars
+	rm -fr grammar
 
 ghpages: ghpages/browser.js
 	git clone -b gh-pages . $$PWD/tmp
@@ -34,6 +34,6 @@ ghpages: ghpages/browser.js
 	rm -rf $$PWD/tmp
 
 
-ghpages/browser.js: ghpages/app.js transpiler/*.js ghpages/HelloWorld.java
+ghpages/browser.js: ghpages/app.js transpiler/*.js ghpages/HelloWorld.java grammar/Java*.js
 	browserify --debug -t brfs -s App $< > $@
 .PHONY: clean ghpages watch
