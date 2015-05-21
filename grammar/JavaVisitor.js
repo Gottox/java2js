@@ -452,6 +452,11 @@ JavaVisitor.prototype.visitExpression = function(ctx) {
 };
 
 
+// Visit a parse tree produced by JavaParser#ternaryOperation.
+JavaVisitor.prototype.visitTernaryOperation = function(ctx) {
+};
+
+
 // Visit a parse tree produced by JavaParser#primary.
 JavaVisitor.prototype.visitPrimary = function(ctx) {
 };

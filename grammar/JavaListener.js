@@ -803,6 +803,15 @@ JavaListener.prototype.exitExpression = function(ctx) {
 };
 
 
+// Enter a parse tree produced by JavaParser#ternaryOperation.
+JavaListener.prototype.enterTernaryOperation = function(ctx) {
+};
+
+// Exit a parse tree produced by JavaParser#ternaryOperation.
+JavaListener.prototype.exitTernaryOperation = function(ctx) {
+};
+
+
 // Enter a parse tree produced by JavaParser#primary.
 JavaListener.prototype.enterPrimary = function(ctx) {
 };
