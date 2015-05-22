@@ -50,10 +50,19 @@ BlockTranspiler.prototype.visitVariableInitializer = function(ctx) {
 }
 
 BlockTranspiler.prototype.visitStatement = function(ctx) {
-	if(ctx.block())
+	if(!ctx)
+		return null;
+	else if(ctx.block())
 		return this.visitWith(BlockTranspiler, ctx.block());
 	else if(ctx.Identifier())
-		return; // TODO: marks
+		return {
+				"type": "LabeledStatement",
+				"label": {
+					"type": "Identifier",
+					"name": ctx.Identifier().getText()
+				},
+				"body": this.visitStatement(ctx.statement()[0])
+			};
 	else if(ctx.statementExpression())
 		return {
 			"type": "ExpressionStatement",
@@ -61,7 +70,47 @@ BlockTranspiler.prototype.visitStatement = function(ctx) {
 		}
 	switch(ctx.getChild(0).getText()) {
 	case "if":
-		return;
+		return {
+			"type": "IfStatement",
+			"test": this.visitWith(ExpressionTranspiler, ctx.parExpression().expression()),
+			"consequent": this.visitStatement(ctx.statement()[0]),
+			"alternate": this.visitStatement(ctx.statement()[1]),
+		};
+		/*return {
+			"type": "ForStatement",
+			"init": this.,
+			"test": ,
+			"update": ,
+			"body": this.visitStatement(ctx.statement()[0])
+		}*/
+	case "do":
+		return {
+			"type": "DoWhileStatement",
+			"body": this.visitStatement(ctx.statement()[0]),
+			"test": this.visitWith(ExpressionTranspiler, ctx.parExpression().expression())
+		};
+	case "while":
+		return {
+			"type": "WhileStatement",
+			"test": this.visitWith(ExpressionTranspiler, ctx.parExpression().expression()),
+			"body": this.visitStatement(ctx.statement()[0])
+		};
+	case "for":
+	case "try":
+	case "switch":
+	case "synchronized":
+	case "return":
+	case "throw":
+	case "break":
+	case "continue":
+		return {
+			type: "Identifier",
+			name: "TODO"
+		};
+	case ';':
+		return {
+			"type": "EmptyStatement"
+		};
 	}
 }
 
