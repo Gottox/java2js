@@ -2,7 +2,7 @@ var antlr4 = require("antlr4");
 var fs = require('fs');
 var JavaParser = require("../lib/grammar/JavaParser.js").JavaParser;
 var JavaLexer = require("../lib/grammar/JavaLexer.js").JavaLexer;
-var java2js = require("../lib/transpiler");
+var java2js = require("../lib/java2js.js");
 var escodegen = require('escodegen');
 
 module.exports.input = fs.readFileSync(__dirname + "/HelloWorld.java").toString();
