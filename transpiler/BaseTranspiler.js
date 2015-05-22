@@ -202,7 +202,7 @@ BaseTranspiler.prototype.findMethod = function(name) {
 }
 
 BaseTranspiler.prototype.visitErrorNode = function(ctx) {
-	throw new Error();
+	console.error("Error");
 }
 
 module.exports = BaseTranspiler;
