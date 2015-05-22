@@ -18,8 +18,8 @@ $(GRAMMAR):
 
 grammar: $(GRAMMAR) $(ANTLR)
 	mkdir -p $@
-	java -jar $(ANTLR) -visitor -Dlanguage=JavaScript $<
-	mv grammars/java/Java*.js grammars/java/Java.tokens $@
+	java -jar $(ANTLR) -visitor -no-listener -Dlanguage=JavaScript $<
+	mv grammars/java/Java*.js grammars/java/Java*.tokens $@
 
 clean:
 	rm -fr grammar
@@ -34,6 +34,6 @@ ghpages: ghpages/browser.js
 	rm -rf $$PWD/tmp
 
 
-ghpages/browser.js: ghpages/app.js transpiler/*.js ghpages/HelloWorld.java grammar/Java*.js
+ghpages/browser.js: ghpages/app.js transpiler/*.js ghpages/HelloWorld.java grammar
 	browserify --debug -t brfs -s App $< > $@
 .PHONY: clean ghpages watch
