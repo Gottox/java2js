@@ -1,6 +1,6 @@
 ANTLR_VERSION = 4.5
-ANTLR = tools/antlr-$(ANTLR_VERSION)-complete.jar
-GRAMMAR = grammars/java/Java.g4
+ANTLR = build/antlr-$(ANTLR_VERSION)-complete.jar
+GRAMMAR = build/grammars/java/Java.g4
 GRAMMAR_REPO = https://github.com/Gottox/grammars-v4.git
 
 all: ghpages
@@ -10,16 +10,16 @@ watch:
 
 
 $(ANTLR):
-	mkdir -p tools;
+	mkdir -p build;
 	wget -c -O $@ http://www.antlr.org/download/antlr-$(ANTLR_VERSION)-complete.jar
 
 $(GRAMMAR):
-	git clone $(GRAMMAR_REPO) grammars || ( cd grammars && git pull )
+	git clone $(GRAMMAR_REPO) build/grammars || ( cd build/grammars && git pull )
 
 lib/grammar: $(GRAMMAR) $(ANTLR)
 	mkdir -p $@
 	java -jar $(ANTLR) -visitor -no-listener -Dlanguage=JavaScript $<
-	mv grammars/java/Java*.js grammars/java/Java*.tokens $@
+	mv build/grammars/java/Java*.js build/grammars/java/Java*.tokens $@
 
 clean:
 	rm -fr lib/grammar
