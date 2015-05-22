@@ -1,8 +1,8 @@
 var antlr4 = require("antlr4");
 var fs = require('fs');
-var JavaParser = require("../grammar/JavaParser.js").JavaParser;
-var JavaLexer = require("../grammar/JavaLexer.js").JavaLexer;
-var java2js = require("../transpiler");
+var JavaParser = require("../lib/grammar/JavaParser.js").JavaParser;
+var JavaLexer = require("../lib/grammar/JavaLexer.js").JavaLexer;
+var java2js = require("../lib/transpiler");
 var escodegen = require('escodegen');
 
 module.exports.input = fs.readFileSync(__dirname + "/HelloWorld.java").toString();

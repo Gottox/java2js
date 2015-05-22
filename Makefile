@@ -16,13 +16,13 @@ $(ANTLR):
 $(GRAMMAR):
 	git clone $(GRAMMAR_REPO) grammars || ( cd grammars && git pull )
 
-grammar: $(GRAMMAR) $(ANTLR)
+lib/grammar: $(GRAMMAR) $(ANTLR)
 	mkdir -p $@
 	java -jar $(ANTLR) -visitor -no-listener -Dlanguage=JavaScript $<
 	mv grammars/java/Java*.js grammars/java/Java*.tokens $@
 
 clean:
-	rm -fr grammar
+	rm -fr lib/grammar
 
 ghpages: ghpages/browser.js
 	git clone -b gh-pages . $$PWD/tmp
@@ -34,6 +34,6 @@ ghpages: ghpages/browser.js
 	rm -rf $$PWD/tmp
 
 
-ghpages/browser.js: ghpages/app.js transpiler/*.js ghpages/HelloWorld.java grammar
+ghpages/browser.js: ghpages/app.js lib/transpiler/*.js ghpages/HelloWorld.java lib/grammar
 	browserify --debug -t brfs -s App $< > $@
 .PHONY: clean ghpages watch
