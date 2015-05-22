@@ -28,7 +28,7 @@ BlockTranspiler.prototype.visitLocalVariableDeclaration = function(ctx) {
 BlockTranspiler.prototype.visitVariableDeclarator = function(ctx) {
 	var val = null;
 	if(ctx.variableInitializer())
-		val = this.visitChildren(ctx.variableInitializer())[0] || null;
+		val = this.visitVariableInitializer(ctx.variableInitializer());
 	return {
 		"type": "VariableDeclarator",
 		"id": {
@@ -36,6 +36,16 @@ BlockTranspiler.prototype.visitVariableDeclarator = function(ctx) {
 			"name": ctx.variableDeclaratorId().Identifier()
 		},
 		"init": val
+	}
+}
+
+BlockTranspiler.prototype.visitVariableInitializer = function(ctx) {
+	if(ctx.expression()) {
+		return this.visitWith(ExpressionTranspiler, ctx.expression());
+	}
+	return {
+		"type": "Identifier",
+		"name": "ArrayInitTODO"
 	}
 }
 
