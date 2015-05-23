@@ -5,36 +5,7 @@
 		<title>index</title>
 		<script src="browser.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/ace.js" type="text/javascript" charset="utf-8"></script>
-		<script>
-			function init() {
-				var theme = "ace/theme/chrome";
-
-				var outEditor = ace.edit("output");
-				outEditor.$blockScrolling = Infinity;
-				outEditor.setTheme(theme);
-				outEditor.getSession().setMode("ace/mode/javascript");
-				outEditor.setReadOnly(true);
-
-				var inEditor = ace.edit("input");
-				inEditor.$blockScrolling = Infinity;
-				inEditor.setTheme(theme);
-				inEditor.getSession().setMode("ace/mode/java");
-
-				var timeout = 0;
-				inEditor.getSession().on('change', function(e) {
-					if(timeout)
-						clearTimeout(timeout);
-					timeout = setTimeout(function() {
-						var jsrc = inEditor.getValue();
-						var jtree = java2js.parse(jsrc);
-						var jstree = java2js.transpile(jtree);
-						var jssrc = java2js.genCode(jstree);
-						outEditor.setValue(src);
-						outEditor.selection.clearSelection();
-					}, 100);
-				});
-			}
-		</script>
+		<script src="app.js"></script>
 		<style>
 #input, #output {
 	display:block;
