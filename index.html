@@ -25,11 +25,14 @@
 					if(timeout)
 						clearTimeout(timeout);
 					timeout = setTimeout(function() {
-						outEditor.setValue(App.compile(inEditor.getValue()));
+						var jsrc = inEditor.getValue();
+						var jtree = java2js.parse(jsrc);
+						var jstree = java2js.transpile(jtree);
+						var jssrc = java2js.genCode(jstree);
+						outEditor.setValue(src);
 						outEditor.selection.clearSelection();
 					}, 100);
 				});
-				inEditor.setValue(App.input);
 			}
 		</script>
 		<style>
@@ -49,7 +52,33 @@
 		</style>
 	</head>
 	<body onload="init()">
-		<div id="input"></div>
+		<div id="input">
+/*
+ * HelloWorld.java
+ *
+ * Example file
+ */
+
+public class HelloWorld
+{
+	public HelloWorld() {
+	}
+
+	public static void main(String[] argv) {
+		HelloWorld hw = new HelloWorld();
+		hw.printHello();
+		hw.printWorld();
+	}
+
+	public void printHello() {
+		System.out.println("Hello");
+	}
+
+	public void printWorld() {
+		System.out.println("World");
+	}
+}
+		</div>
 		<div id="output"></div>
 	</body>
 </html>
