@@ -5,33 +5,7 @@
 		<title>index</title>
 		<script src="browser.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/ace.js" type="text/javascript" charset="utf-8"></script>
-		<script>
-			function init() {
-				var theme = "ace/theme/chrome";
-
-				var outEditor = ace.edit("output");
-				outEditor.$blockScrolling = Infinity;
-				outEditor.setTheme(theme);
-				outEditor.getSession().setMode("ace/mode/javascript");
-				outEditor.setReadOnly(true);
-
-				var inEditor = ace.edit("input");
-				inEditor.$blockScrolling = Infinity;
-				inEditor.setTheme(theme);
-				inEditor.getSession().setMode("ace/mode/java");
-
-				var timeout = 0;
-				inEditor.getSession().on('change', function(e) {
-					if(timeout)
-						clearTimeout(timeout);
-					timeout = setTimeout(function() {
-						outEditor.setValue(App.compile(inEditor.getValue()));
-						outEditor.selection.clearSelection();
-					}, 100);
-				});
-				inEditor.setValue(App.input);
-			}
-		</script>
+		<script src="app.js"></script>
 		<style>
 #input, #output {
 	display:block;
@@ -49,7 +23,33 @@
 		</style>
 	</head>
 	<body onload="init()">
-		<div id="input"></div>
+		<div id="input">
+/*
+ * HelloWorld.java
+ *
+ * Example file
+ */
+
+public class HelloWorld
+{
+	public HelloWorld() {
+	}
+
+	public static void main(String[] argv) {
+		HelloWorld hw = new HelloWorld();
+		hw.printHello();
+		hw.printWorld();
+	}
+
+	public void printHello() {
+		System.out.println("Hello");
+	}
+
+	public void printWorld() {
+		System.out.println("World");
+	}
+}
+		</div>
 		<div id="output"></div>
 	</body>
 </html>

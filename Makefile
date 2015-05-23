@@ -34,6 +34,6 @@ ghpages: ghpages/browser.js
 	rm -rf $$PWD/tmp
 
 
-ghpages/browser.js: ghpages/app.js lib/transpiler/*.js ghpages/HelloWorld.java lib/grammar
-	browserify --debug -t brfs -s App $< > $@
+ghpages/browser.js: index.js lib/transpiler/*.js ghpages/HelloWorld.java lib/grammar
+	browserify --debug -t brfs -s java2js $< > $@
 .PHONY: clean ghpages watch
