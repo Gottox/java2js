@@ -1,5 +1,3 @@
-
-
 function init() {
 
 	var theme = "ace/theme/chrome";
@@ -14,6 +12,13 @@ function init() {
 	inEditor.$blockScrolling = Infinity;
 	inEditor.setTheme(theme);
 	inEditor.getSession().setMode("ace/mode/java");
+
+	inEditor.commands.addCommand({
+		name: "exec",
+		bindKey: "Ctrl-e",
+		exec: exec
+	})
+
 
 	function ErrorListener() {
 		this.errors = [];
@@ -46,6 +51,23 @@ function init() {
 		inEditor.getSession().setAnnotations(el.errors);
 		outEditor.setValue(jssrc);
 		outEditor.selection.clearSelection();
+	}
+	function exec() {
+		var e = eval;
+		var pre =
+			"var System = {\n" +
+			"	out: {\n" +
+			"		println: function(a) { alert(a.toString()) }\n" +
+			"	}\n" +
+			"};\n" +
+			"var java = {\n" +
+			"	lang: {\n" +
+			"		String: function(s) { this.toString = function() {return s; }\n" +
+			"		}\n" +
+			"	}\n" +
+			"}\n";
+		var post = "HelloWorld.main()";
+		e(pre + outEditor.getValue() + post);
 	}
 	update();
 }
