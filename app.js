@@ -7,6 +7,7 @@ function init() {
 	outEditor.setTheme(theme);
 	outEditor.getSession().setMode("ace/mode/javascript");
 	outEditor.setReadOnly(true);
+	outEditor.session.setOption("useWorker", false);
 
 	var inEditor = ace.edit("input");
 	inEditor.$blockScrolling = Infinity;
