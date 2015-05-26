@@ -6,7 +6,7 @@ GRAMMAR_REPO = https://github.com/Gottox/grammars-v4.git
 all: ghpages
 
 watch:
-	inotifyrun /bin/sh -c 'sleep 0.1;make grammar ghpages/browser.js'
+	inotifyrun /bin/sh -c 'sleep 0.1;make lib/grammar ghpages/browser.js'
 
 
 $(ANTLR):
