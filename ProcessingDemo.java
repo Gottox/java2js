@@ -1,10 +1,10 @@
 /*
- * HelloWorld.java
+ * ProcessingDemo.java
  *
  * Example file
  */
 
-class ProcessingDemo {
+class ProcessingDemo extends processing{
 	// Global variables
 	float radius = 50.0f;
 	int X, Y;
@@ -13,9 +13,9 @@ class ProcessingDemo {
 
 	// Setup the Processing Canvas
 	public void setup(){
-		size(200, 200);
-		strokeWeight( 10 );
-		frameRate(15);
+		this.size(200, 200);
+		this.strokeWeight( 10 );
+		this.frameRate(15);
 		this.X = width / 2;
 		this.Y = width / 2;
 		this.nX = this.X;
@@ -25,29 +25,29 @@ class ProcessingDemo {
 	// Main draw loop
 	public void draw(){
 
-		this.radius = this.radius + sin( frameCount / 4 );
+		this.radius = this.radius + sin( this.frameCount / 4 );
 
 		// Track circle to new destination
-		X+=(nX-X)/delay;
-		Y+=(nY-Y)/delay;
+		this.X+=(this.nX-this.X)/this.delay;
+		this.Y+=(this.nY-this.Y)/this.delay;
 
 		// Fill canvas grey
-		background( 100 );
+		this.background( 100 );
 
 		// Set fill-color to blue
-		fill( 0, 121, 184 );
+		this.fill( 0, 121, 184 );
 
 		// Set stroke-color white
-		stroke(255); 
+		this.stroke(255);
 
 		// Draw circle
-		ellipse( X, Y, this.radius, this.radius );
+		this.ellipse( this.X, this.Y, this.radius, this.radius );
 	}
 
 
 	// Set circle's next destination
 	void mouseMoved(){
-		nX = mouseX;
-		nY = mouseY;  
+		this.nX = this.mouseX;
+		this.nY = this.mouseY;
 	}
 }
