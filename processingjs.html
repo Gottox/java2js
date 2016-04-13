@@ -6,21 +6,27 @@
 		<script src="browser.js"></script>
 		<script src="../bower_components/Processing.js/processing.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/ace.js" type="text/javascript" charset="utf-8"></script>
-		<script src="app.js"></script>
+		<script src="processingjs.js"></script>
 		<style>
-#input, #output {
+#input, #output, #canvas {
 	display:block;
 	position:absolute;
-	top:0;
 	width:50%;
 }
 #input {
 	left:0;
 	bottom:0;
+	top:0;
 }
 #output {
 	right:0;
+	top:0;
 	bottom:50%;
+}
+#canvas {
+	top:50%;
+	bottom:0;
+	right:0;
 }
 		</style>
 	</head>
@@ -32,54 +38,22 @@
  * Example file
  */
 
-class ProcessingDemo extends processing{
-	// Global variables
-	float radius = 50.0f;
-	int X, Y;
-	int nX, nY;
-	int delay = 16;
+class ProcessingDemo extends Processing {
+	Processing(Element canvas) {
+		super(canvas);
+	}
 
 	// Setup the Processing Canvas
 	public void setup(){
-		this.size(200, 200);
-		this.strokeWeight( 10 );
-		this.frameRate(15);
-		this.X = width / 2;
-		this.Y = width / 2;
-		this.nX = this.X;
-		this.nY = this.Y;
 	}
 
 	// Main draw loop
 	public void draw(){
-
-		this.radius = this.radius + sin( this.frameCount / 4 );
-
-		// Track circle to new destination
-		this.X+=(this.nX-this.X)/this.delay;
-		this.Y+=(this.nY-this.Y)/this.delay;
-
-		// Fill canvas grey
-		this.background( 100 );
-
-		// Set fill-color to blue
-		this.fill( 0, 121, 184 );
-
-		// Set stroke-color white
-		this.stroke(255);
-
-		// Draw circle
-		this.ellipse( this.X, this.Y, this.radius, this.radius );
-	}
-
-
-	// Set circle's next destination
-	void mouseMoved(){
-		this.nX = this.mouseX;
-		this.nY = this.mouseY;
+		this.processing.background(224);
 	}
 }
 		</div>
 		<div id="output"></div>
+		<canvas id="canvas"></canvas>
 	</body>
 </html>
