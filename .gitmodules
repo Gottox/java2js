@@ -1,0 +1,3 @@
+[submodule "ace-builds"]
+	path = ghpages/ace
+	url = git://github.com/ajaxorg/ace-builds.git
