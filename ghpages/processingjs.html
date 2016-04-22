@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Java to Javascript Transpiler (ctrl-e to execute)</title>
+		<script src="browser.js"></script>
+		<script src="../bower_components/Processing.js/processing.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script src="processingjs.js"></script>
+		<style>
+#input, #output, #canvas {
+	display:block;
+	position:absolute;
+	width:50%;
+}
+#input {
+	left:0;
+	bottom:0;
+	top:0;
+}
+#output {
+	right:0;
+	top:0;
+	bottom:50%;
+}
+#canvas {
+	top:50%;
+	bottom:0;
+	right:0;
+	height:50%;
+}
+		</style>
+	</head>
+	<body onload="init()">
+		<div id="input">
+/*
+ * ProcessingDemo.java
+ *
+ * Example file
+ */
+
+class ProcessingDemo extends Processing {
+	double centerX;
+	double maxArmLength;
+
+	ProcessingDemo(Element canvas) {
+		super(canvas, new Function("p",
+			"p.draw = ProcessingDemo.prototype.draw;"+
+			"p.setup = ProcessingDemo.prototype.setup"));
+	}
+
+	// Setup the Processing Canvas
+	public void setup(){
+	}
+
+	// Main draw loop
+	public void draw(){
+		this.centerX = this.width / 2;
+		this.centerY = this.height / 2;
+		this.maxArmLength = Math.min(this.centerX, this.centerY);
+		Date now = new Date();
+
+		this.background(224);
+
+		double hoursPosition = (now.getHours() % 12 + now.getMinutes() / 60) / 12;
+		this.drawArm(hoursPosition, 0.5, 5);
+
+		double minutesPosition = (now.getMinutes() + now.getSeconds() / 60) / 60;
+		this.drawArm(minutesPosition, 0.80, 3);
+
+		double secondsPosition = now.getSeconds() / 60;
+		this.drawArm(secondsPosition, 0.90, 1);
+	}
+
+	private void drawArm(double position, double lengthScale, double weight) {
+		this.strokeWeight(weight);
+		this.line(this.centerX, this.centerY,
+			this.centerX + Math.sin(position * 2 * Math.PI) * lengthScale * this.maxArmLength,
+			this.centerY - Math.cos(position * 2 * Math.PI) * lengthScale * this.maxArmLength);
+	}
+
+
+}
+		</div>
+		<div id="output"></div>
+		<canvas id="canvas"></canvas>
+	</body>
+</html>
