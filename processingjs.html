@@ -51,6 +51,7 @@ class ProcessingDemo extends Processing {
 
 	// Setup the Processing Canvas
 	public void setup(){
+		this.size(640, 480);
 	}
 
 	// Main draw loop
@@ -63,13 +64,13 @@ class ProcessingDemo extends Processing {
 		this.background(224);
 
 		double hoursPosition = (now.getHours() % 12 + now.getMinutes() / 60) / 12;
-		this.drawArm(hoursPosition, 0.5, 5);
+		drawArm(hoursPosition, 0.5, 5);
 
 		double minutesPosition = (now.getMinutes() + now.getSeconds() / 60) / 60;
-		this.drawArm(minutesPosition, 0.80, 3);
+		drawArm(minutesPosition, 0.80, 3);
 
 		double secondsPosition = now.getSeconds() / 60;
-		this.drawArm(secondsPosition, 0.90, 1);
+		drawArm(secondsPosition, 0.90, 1);
 	}
 
 	private void drawArm(double position, double lengthScale, double weight) {
