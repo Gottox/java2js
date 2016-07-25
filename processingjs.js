@@ -14,12 +14,6 @@ function init() {
 	inEditor.setTheme(theme);
 	inEditor.getSession().setMode("ace/mode/java");
 
-	inEditor.commands.addCommand({
-		name: "exec",
-		bindKey: "Ctrl-e",
-		exec: exec
-	})
-
 
 	function ErrorListener() {
 		this.errors = [];
@@ -52,8 +46,9 @@ function init() {
 		inEditor.getSession().setAnnotations(el.errors);
 		outEditor.setValue(jssrc);
 		outEditor.selection.clearSelection();
-	}
-	function exec() {
+
+		if(window.p)
+			window.p.noLoop();
 		var pre =
 			"var System = {\n" +
 			"	out: {\n" +
@@ -68,7 +63,6 @@ function init() {
 			"}\n";
 		var post = ";window.ProcessingDemo = ProcessingDemo;window.p = new ProcessingDemo(document.getElementById('canvas'));";
 		eval(pre + outEditor.getValue() + post);
-
 	}
 	update();
 }
