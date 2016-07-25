@@ -28,6 +28,7 @@ ghpages: ghpages/browser.js
 	git clone -b gh-pages . $$PWD/tmp
 	git -C tmp rm -rf $$PWD/tmp/*
 	cp -r ghpages/* $$PWD/tmp
+	rm tmp/ace/.git -r
 	git -C tmp add $$PWD/tmp
 	git -C tmp commit -m "rebuild gh-pages based on `git rev-parse HEAD`"
 	git -C tmp push $$PWD gh-pages
